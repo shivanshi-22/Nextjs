@@ -1,6 +1,9 @@
 import { types, flow } from "mobx-state-tree";
 import axios from "axios";
-
+export const UserStoreModel = types.model("UserStore", {
+  username: types.optional(types.string, ""),
+  email: types.optional(types.string, ""),
+});
 export const DataModel = types.model("DataModel", {
   id: types.identifierNumber, // Adjust based on your API response
   name: types.string,
@@ -18,7 +21,7 @@ export const DataStore = types
       self.isLoading = true;
       self.error = null;
       try {
-        const response = yield axios.get("https://api.example.com/data");
+        const response = yield axios.get("https://highpolarsoftwares.slack.com/archives/D087DG53H27/p1736415266108429");
         self.data = response.data; // Assuming the API returns an array
       } catch (error: any) {
         self.error = error.message || "Failed to fetch data.";

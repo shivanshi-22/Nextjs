@@ -1,11 +1,12 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree";
-import { UserStore } from "../modules/auth/store";
-import { DataStore } from "../modules/data/store"; // Import DataStore
+import { DataStore } from "../../store/datastore"; // Import the DataStore
+import { UserStoreModel } from "../../modules/auth/store"; // Import UserStoreModel
 
 export const RootStoreModel = types.model("RootStore").props({
-  userStore: types.optional(UserStore, {}),
-  dataStore: types.optional(DataStore, {}), // Add DataStore to RootStore
+  userStore: types.optional(UserStoreModel, {}), // Add UserStoreModel
+  dataStore: types.optional(DataStore, {}), // Add DataStore
 });
 
+// Define TypeScript interfaces for the RootStore
 export interface RootStore extends Instance<typeof RootStoreModel> {}
 export interface RootStoreSnapshot extends SnapshotOut<typeof RootStoreModel> {}

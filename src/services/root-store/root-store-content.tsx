@@ -1,22 +1,21 @@
-import { createContext, useContext } from "react";
-import { RootStore } from "./root-store";
+"use client";
 
-/**
- * Create a context we can use to
- * - Provide access to our stores from our root component
- * - Consume stores in our screens (or other components, though it's
- *   preferable to just connect screens)
- */
-const RootStoreContext = createContext<RootStore>({} as RootStore);
+import React, { createContext, useContext } from "react";
+import { RootStore } from "./root-store"; // Adjust import path as needed
 
-/**
- * The provider our root component will use to expose the root store
- */
-export const RootStoreProvider = RootStoreContext.Provider;
+const RootStoreContext = createContext<RootStore | null>(null);
 
-/**
- * A hook that screens can use to gain access to our stores, with
- * `const { someStore, someOtherStore } = useStores()`,
- * or less likely: `const rootStore = useStores()`
- */
-export const useStores = () => useContext(RootStoreContext);
+export const RootStoreProvider: React.FC<{ value: RootStore; children: React.ReactNode }> = ({
+  value,
+  children,
+}) => {
+  return <RootStoreContext.Provider value={value}>{children}</RootStoreContext.Provider>;
+};
+
+export const useRootStore = () => {
+  const context = useContext(RootStoreContext);
+  if (!context) {
+    throw new Error("useRootStore must be used within a RootStoreProvider");
+  }
+  return context;
+};

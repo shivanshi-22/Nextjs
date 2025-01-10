@@ -2,10 +2,10 @@
 
 import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { useStores } from "@/services/root-store/root-store-content";
+import { useRootStore } from "@/services/root-store/root-store-content";
 
 const Page = observer(() => {
-  const { dataStore } = useStores(); // Access the dataStore from RootStore
+  const { dataStore } = useRootStore(); // Access the dataStore from RootStore
 
   useEffect(() => {
     dataStore.fetchData(); // Fetch data when the component mounts
