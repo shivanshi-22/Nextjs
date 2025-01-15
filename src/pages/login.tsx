@@ -1,5 +1,5 @@
 import { useState } from "react";
-import authStore from "../store/authStore";
+import authStore from "../modules/auth/authStore";
 import { useRouter } from "next/router";
 
 const Login: React.FC = () => {

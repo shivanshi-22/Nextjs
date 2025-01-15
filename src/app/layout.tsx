@@ -1,7 +1,7 @@
 "use client"; // Mark this as a Client Component
 
 import React, { useEffect, useState } from "react";
-import { RootStoreProvider } from "@/services/root-store/root-store-content";
+import { RootStoreProvider } from "@/services/root-store/root-store-context";
 import { setupRootStore } from "@/services/root-store/setup-root-store";
 
 export default function Layout({ children }: { children: React.ReactNode }) {

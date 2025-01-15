@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
-import authStore from "../store/authStore";
+import authStore from "../modules/auth/authStore";
 
 const Navbar: React.FC = observer(() => {
   return (
