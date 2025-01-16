@@ -1,27 +1,24 @@
-import { makeAutoObservable } from "mobx";
+import { types, flow } from "mobx-state-tree";
 
-interface User {
-  email: string;
-}
-
-class AuthStore {
-  user: User | null = null; // Stores user data
-  isAuthenticated: boolean = false; // Tracks login state
-
-  constructor() {
-    makeAutoObservable(this);
-  }
-
-  login(user: User) {
-    this.user = user;
-    this.isAuthenticated = true;
-  }
-
-  logout() {
-    this.user = null;
-    this.isAuthenticated = false;
-  }
-}
-
-const authStore = new AuthStore();
-export default authStore;
+export const AuthStore = types
+  .model("AuthStore", {
+    isAuthenticated: types.boolean,
+    user: types.maybeNull(types.model({
+      email: types.string,
+    })),
+  })
+  .actions((self) => ({
+    login: flow(function* (email: string, password: string) {
+      // Simulated login logic
+      if (email === "test@example.com" && password === "password") {
+        self.isAuthenticated = true;
+        self.user = { email };
+        return true;
+      }
+      return false;
+    }),
+    logout() {
+      self.isAuthenticated = false;
+      self.user = null;
+    },
+  }));

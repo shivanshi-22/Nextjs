@@ -1,8 +1,11 @@
+// Updated Navbar Component
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
-import authStore from "../modules/auth/authStore";
+import { useRootStore } from "@/services/root-store/root-store-context";
 
 const Navbar: React.FC = observer(() => {
+  const { authStore } = useRootStore();
+
   return (
     <nav style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>
       <Link href="/">
