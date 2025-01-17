@@ -1,17 +1,20 @@
-"use client"; // Mark this as a Client Component
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { RootStoreProvider } from "@/services/root-store/root-store-context";
 import { setupRootStore } from "@/services/root-store/setup-root-store";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [rootStore, setRootStore] = useState<any>(null);
 
   useEffect(() => {
-    // Initialize the MobX Root Store on the client side
     const initializeStore = async () => {
       const store = await setupRootStore();
-      setRootStore(store); // Set the initialized store
+      setRootStore(store);
     };
 
     initializeStore();
@@ -21,10 +24,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   if (!rootStore) return <div>Loading application...</div>;
 
   return (
-    <RootStoreProvider value={rootStore}>
-      <html lang="en">
-        <body>{children}</body>
-      </html>
-    </RootStoreProvider>
+    <html lang="en">
+      <body>
+        <div>
+          This application is powered by RootStore.
+          <RootStoreProvider value={rootStore}>{children}</RootStoreProvider>
+        </div>
+      </body>
+    </html>
   );
 }

@@ -1,14 +1,11 @@
 import { getSnapshot, onSnapshot } from "mobx-state-tree";
 import { RootStoreModel, RootStore } from "./root-store";
-
 import * as storage from "localforage";
 
 /**
  * The key we'll be saving our state as within async storage.
  */
 export const ROOT_STATE_STORAGE_KEY = "kynnik_root";
-
-
 
 /**
  * Setup the root state.
@@ -17,25 +14,34 @@ export async function setupRootStore() {
   let rootStore: RootStore;
   let data: any;
 
-  // prepare the environment that will be associated with the RootStore.
-  
   try {
-    // load data from storage
+    // Check if localforage is properly configured
+    storage.config({
+      name: "KynnikApp",
+      storeName: "rootState",
+    });
+
+    // Load data from storage
     data = (await storage.getItem(ROOT_STATE_STORAGE_KEY)) || {};
+
+    // Create the root store with the loaded data
     rootStore = RootStoreModel.create(data);
-    storage.setItem(ROOT_STATE_STORAGE_KEY, getSnapshot(rootStore));
+
+    // Save the initial snapshot to storage
+    await storage.setItem(ROOT_STATE_STORAGE_KEY, getSnapshot(rootStore));
   } catch (e: any) {
-    // if there's any problems loading, then let's at least fallback to an empty state
-    // instead of crashing.
+    // Fallback to an empty state in case of errors
     rootStore = RootStoreModel.create({});
-    storage.setItem(ROOT_STATE_STORAGE_KEY, getSnapshot(rootStore));
-    // but please inform us what happened
-    console.error(e.message, null);
+    await storage.setItem(ROOT_STATE_STORAGE_KEY, getSnapshot(rootStore));
+    console.error("Failed to initialize root store:", e.message);
   }
 
-  // track changes & save to storage
-  onSnapshot(rootStore, (snapshot) => storage.setItem(ROOT_STATE_STORAGE_KEY, snapshot));
+  // Track changes & save to storage
+  onSnapshot(rootStore, (snapshot) => {
+    storage.setItem(ROOT_STATE_STORAGE_KEY, snapshot).catch((error) => {
+      console.error("Failed to save snapshot to storage:", error);
+    });
+  });
 
   return rootStore;
 }
-export const localStorage = storage;

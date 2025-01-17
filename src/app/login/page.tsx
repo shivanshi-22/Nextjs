@@ -1,22 +1,21 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation"; // Use this for navigation in the app directory
 import { useRootStore } from "@/services/root-store/root-store-context";
 
 const Login = () => {
-  const { authStore } = useRootStore(); // Access the authStore
-  const router = useRouter(); // Next.js router for navigation
+  const { authStore } = useRootStore();
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleLogin = async () => {
     try {
-      // Simulate login (you can replace this with your actual login logic)
       const success = await authStore.login(email, password);
       if (success) {
-        router.push("/"); // Redirect to the home page on successful login
+        router.push("/"); // Redirect to home
       } else {
         setError("Invalid email or password.");
       }
