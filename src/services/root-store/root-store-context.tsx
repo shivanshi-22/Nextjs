@@ -1,10 +1,20 @@
-import { createContext, useContext } from "react";
-import { RootStoreModel } from "./root-store";
+import React, { createContext, useContext, ReactNode } from "react";
+import { rootStore } from "./root-store";
 
-const rootStore = RootStoreModel.create({});
+const RootStoreContext = createContext<typeof rootStore | null>(null);
 
-const RootStoreContext = createContext(rootStore);
+export const RootStoreProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  return (
+    <RootStoreContext.Provider value={rootStore}>
+      {children}
+    </RootStoreContext.Provider>
+  );
+};
 
-export const RootStoreProvider = RootStoreContext.Provider;
-
-export const useRootStore = () => useContext(RootStoreContext);
+export const useRootStore = () => {
+  const context = useContext(RootStoreContext);
+  if (!context) {
+    throw new Error("useRootStore must be used within a RootStoreProvider");
+  }
+  return context;
+};

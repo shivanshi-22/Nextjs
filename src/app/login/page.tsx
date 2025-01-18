@@ -1,15 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation"; // Use this for navigation in the app directory
+import { useRouter } from "next/navigation";
 import { useRootStore } from "@/services/root-store/root-store-context";
 
-const Login = () => {
+const Login: React.FC = () => {
   const { authStore } = useRootStore();
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const handleLogin = async () => {
     try {

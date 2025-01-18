@@ -1,5 +1,5 @@
 import { types } from "mobx-state-tree";
-import { AuthStore } from "@/modules/auth/authStore";
+import AuthStore from "@/modules/auth/authStore";
 
 export const RootStoreModel = types.model("RootStore", {
   authStore: types.optional(AuthStore, {
